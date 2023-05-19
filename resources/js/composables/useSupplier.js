@@ -19,7 +19,7 @@ export default function useSupplier() {
   async function fetchSupplier(id) {
     try {
         const response = await api.request(`/api/suppliers/${id}`, "GET")
-        selectedSupplier.value = response
+        selectedSupplier.value = response.data
     } catch (error) {
         console.error(error.message)
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Supplier;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreSupplierRequest extends FormRequest
 {
@@ -21,14 +22,31 @@ class StoreSupplierRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'code' => 'nullable|max:10',
-            'name' => 'required|max:255',
-            'contact_person' => 'required|max:255', 
-            'contact_number' => 'required|max:100', 
-            'email' => 'required|email|unique:suppliers,email', 
-            'address' => 'required|max:255', 
-            'is_active' => 'required|boolean'
-        ];
+
+        $method = $this->method();
+
+        if($method == 'PUT') {
+            return [
+                'code' => ['nullable', Rule::unique('suppliers', 'code')->ignore($request->id), 'max:10'],
+                'name' => ['required', 'max:255'],
+                'contact_person' => 'required|max:255', 
+                'contact_number' => 'required|max:100', 
+                'email' => 'required|email|unique:suppliers,email', 
+                'address' => 'required|max:255', 
+                'is_active' => 'required|boolean'
+            ];
+        } else {
+            return [
+                'code' => 'nullable|unique:suppliers,code|max:10',
+                'name' => 'required|max:255',
+                'contact_person' => 'required|max:255', 
+                'contact_number' => 'required|max:100', 
+                'email' => 'required|email|unique:suppliers,email', 
+                'address' => 'required|max:255', 
+                'is_active' => 'required|boolean'
+            ];
+        }
+
+        
     }
 }

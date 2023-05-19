@@ -1,8 +1,9 @@
 // import './bootstrap';
 
-import {createApp} from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import piniaPluginPersistedsate from 'pinia-plugin-persistedstate'
+// import { createPersistedState } from 'pinia-plugin-persistedstate';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
 import '../css/app.css'
@@ -11,7 +12,7 @@ import '../css/app.css'
 
 const app = createApp(App)
 const pinia = createPinia()
-pinia.use(piniaPluginPersistedsate)
+pinia.use(piniaPluginPersistedstate)
 
 app.use(router)
 app.use(pinia)

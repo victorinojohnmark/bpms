@@ -18,4 +18,19 @@ class SupplierService {
 
         return new SupplierCollection($suppliers->paginate()->appends($request->query()));
     }
+
+    public function show(Supplier $supplier)
+    {
+        return new SupplierResource($supplier);
+    }
+
+    public function store()
+    {
+
+    }
+
+    public function update(Supplier $supplier)
+    {
+        
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-  <form action="#" class="flex flex-wrap p-4 bg-gray-50" @submit.prevent>
+  <form action="#" class="flex flex-wrap p-4 gap-y-2 bg-gray-50" @submit.prevent>
       <div class="w-full md:w-1/2 px-2">
           <BaseInput v-model="supplier.name" label="Supplier Name" />
       </div>
@@ -7,7 +7,7 @@
           <BaseInput v-model="supplier.contactPerson" label="Contact Person" />
       </div>
       <div class="w-full md:w-1/3 px-2">
-          <BaseInput v-model="supplier.emailAddress" label="Email Address" />
+          <BaseInput v-model="supplier.email" label="Email Address" />
       </div>
       <div class="w-full md:w-1/3 px-2">
           <BaseInput v-model="supplier.contactNumber" label="Contact No." />
@@ -15,8 +15,9 @@
       <div class="w-full md:w-1/3 px-2">
           <BaseToggle v-model="supplier.isActive" label="Active" />
       </div>
-      <div class="w-auto px-2">
-          <ButtonPrimary type="submit" label="Save" @click="updateSupplier"/>
+      <div class="inline-flex gap-x-2 w-auto px-2">
+          <ButtonPrimary type="submit" label="Save" @click="$emit('save')"/>
+          <ButtonDanger type="reset" label="Cancel" @click.prevent="$emit('cancelForm')"/>
       </div>
   </form>
 </template>
@@ -25,8 +26,7 @@
 import BaseInput from '../../../components/inputform/BaseInput.vue';
 import BaseToggle from '../../../components/inputform/BaseToggle.vue';
 import ButtonPrimary from '../../../components/buttons/ButtonPrimary.vue';
-import { ref, onMounted } from 'vue';
-import useSupplier from '../../../models/SupplierModel'
+import ButtonDanger from '../../../components/buttons/ButtonDanger.vue';
 
 const props = defineProps({
     supplier: {
@@ -34,24 +34,7 @@ const props = defineProps({
         required: true
     }
 })
-const { supplier } = useSupplier()
-const supplierCopy = ref(null)
 
-const emit = defineEmits('update:supplier', supplier)
-
-const updateSupplier = () => {
-    emit('update:supplier', supplier)
-}
-
-watchEffect(() => {
-    supplierCopy.value = props.supplier
-    supplier.value = supplierCopy.value
-})
-
-onMounted(() => {
-    supplier.value = props.supplier
-    // console.log(supplier.value)
-})
-
+const emit = defineEmits(['cancelForm', 'save'])
 
 </script>

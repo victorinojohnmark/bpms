@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { createPersistedState } from 'pinia-plugin-persistedstate'
 import { ApiClient } from '../helpers'
 
 const AUTH_STORAGE_KEY = 'auth'
@@ -7,7 +6,6 @@ const AUTH_STORAGE_KEY = 'auth'
 
 export const useAuthStore = defineStore({
   id: 'auth',
-  // plugins: [createPersistedState()],
   persist: true,
   state: () => ({
     // isAuthenticated: false,
@@ -23,7 +21,6 @@ export const useAuthStore = defineStore({
   },
   actions: {
     login(user, token, tokenExpiration, permissions) {
-      // this.isAuthenticated = true
       this.user = user
       this.token = token
       this.tokenExpiration = tokenExpiration
@@ -70,35 +67,23 @@ export const useAuthStore = defineStore({
     },
     // Load the authentication state from localStorage on store initialization
     initialize() {
-      if (this.isAuthenticated) {
+      if (this.user) {
         // Already initialized
         return
       }
 
       const authData = this.$state
-      if(!authData || !authData.user || !authData.isAuthenticated) {
+      if(!authData || !authData.user) {
         this.clearAuth()
       } else {
-        // this.isAuthenticated = true
         this.user = authData.user
         this.token = authData.token
         this.tokenExpiration = authData.tokenExpiration
         this.permissions = authData.permissions
       }
-
-      // if (authData && authData.isAuthenticated && authData.user) {
-      //   this.isAuthenticated = true
-      //   this.user = authData.user
-      //   this.token = authData.token
-      //   this.tokenExpiration = authData.tokenExpiration
-      //   this.permissions = authData.permissions
-      // } else {
-      //   this.clearAuth()
-      // }
     },
     // Clear auth state from localStorage and store
     clearAuth() {
-      // this.isAuthenticated = false
       this.user = null
       this.token = null
       this.tokenExpiration = null
